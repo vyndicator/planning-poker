@@ -10,6 +10,7 @@
     "generate:api": "openapi-generator-cli generate -i http://localhost:8080/q/openapi -g typescript-angular -o src/app/api --additional-properties=providedIn=root,ngVersion=21,supportsES6=true,enumPropertyNaming=original,useSingleRequestParameter=true"
   },
   "private": true,
+  "type": "module",
   "packageManager": "npm@10.9.3",
   "dependencies": {
     "@angular/common": "^21.2.0",
