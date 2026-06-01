@@ -44,6 +44,10 @@ export interface IssueSelectedData {
   issueIid: number;
 }
 
+export interface CardsRevealedData {
+  votes: Array<{ participantId: string; participantName: string; value: string }>;
+}
+
 export interface RoundFinalizedData {
   issueIid: number;
   finalValue: string;
