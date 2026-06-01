@@ -1,5 +1,15 @@
-#Maven
+# Maven
 target/
+.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# Quarkus native builds
+*-runner
+*-runner.jar
+*-sources.jar
+*.so
+*.dll
+*.dylib
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
