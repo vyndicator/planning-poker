@@ -9,7 +9,6 @@ import { storageKey } from '../session/stores/session.store';
 
 interface LobbyState {
   loading: boolean;
-  error: string | null;
 }
 
 interface JoinResponse {
@@ -30,35 +29,28 @@ interface JoinParams {
 }
 
 export const LobbyStore = signalStore(
-  withState<LobbyState>({ loading: false, error: null }),
+  withState<LobbyState>({ loading: false }),
 
   withMethods((store, api = inject(SessionResourceService), router = inject(Router)) => ({
     createSession: rxMethod<CreateParams>(
       pipe(
-        tap(() => patchState(store, { loading: true, error: null })),
+        tap(() => patchState(store, { loading: true })),
         switchMap(({ scrumMasterName, gitlabProjectId, gitlabToken }) =>
           api
-            .createSession({
-              createSessionRequest: { scrumMasterName, gitlabProjectId, gitlabToken },
-            })
+            .createSession({ createSessionRequest: { scrumMasterName, gitlabProjectId, gitlabToken } })
             .pipe(
               tapResponse({
                 next: (res: JoinResponse) => {
                   localStorage.setItem(
                     storageKey(res.sessionId),
-                    JSON.stringify({
-                      participantId: res.participantId,
-                      myRole: res.role,
-                      myName: scrumMasterName,
-                    }),
+                    JSON.stringify({ participantId: res.participantId, myRole: res.role, myName: scrumMasterName }),
                   );
                   router.navigate(['/session', res.sessionId]);
                 },
-                error: () =>
-                  patchState(store, {
-                    loading: false,
-                    error: 'Could not create session. Check your GitLab credentials.',
-                  }),
+                error: () => {
+                  patchState(store, { loading: false });
+                  router.navigate(['/error'], { queryParams: { message: 'Could not create session. Check your GitLab credentials.' } });
+                },
               }),
             ),
         ),
@@ -67,22 +59,21 @@ export const LobbyStore = signalStore(
 
     joinSession: rxMethod<JoinParams>(
       pipe(
-        tap(() => patchState(store, { loading: true, error: null })),
+        tap(() => patchState(store, { loading: true })),
         switchMap(({ sessionId, name }) =>
           api.joinSession({ sessionId, joinRequest: { name } }).pipe(
             tapResponse({
               next: (res: JoinResponse) => {
                 localStorage.setItem(
                   storageKey(res.sessionId),
-                  JSON.stringify({
-                    participantId: res.participantId,
-                    myRole: res.role,
-                    myName: name,
-                  }),
+                  JSON.stringify({ participantId: res.participantId, myRole: res.role, myName: name }),
                 );
                 router.navigate(['/session', res.sessionId]);
               },
-              error: () => patchState(store, { loading: false, error: 'Session not found.' }),
+              error: () => {
+                patchState(store, { loading: false });
+                router.navigate(['/error'], { queryParams: { message: 'Session not found or already closed.' } });
+              },
             }),
           ),
         ),

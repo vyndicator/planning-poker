@@ -4,12 +4,6 @@
     <p class="text-surface-500">Your tool for faster ticket estimation.</p>
   </div>
 
-  @if (sessionError()) {
-    <div class="w-full max-w-4xl mb-4">
-      <p-message severity="error" text="Session not found or has ended." />
-    </div>
-  }
-
   <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
     <!-- Create Session -->
     <div
@@ -51,10 +45,6 @@
             "
           />
         </div>
-
-        @if (store.error()) {
-          <p-message severity="error" [text]="store.error()!" />
-        }
 
         <p-button
           type="submit"
@@ -98,9 +88,6 @@
             />
           </div>
 
-          @if (store.error()) {
-            <p-message severity="error" [text]="store.error()!" />
-          }
         </div>
 
         <p-button
