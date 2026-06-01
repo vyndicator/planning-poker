@@ -1,0 +1,117 @@
+<div class="min-h-screen bg-surface-50 flex flex-col items-center justify-center p-6">
+  <div class="mb-8 text-center animate-fade-slide-up">
+    <h1 class="text-4xl font-bold text-primary mb-2">Planning Poker</h1>
+    <p class="text-surface-500">Your tool for faster ticket estimation.</p>
+  </div>
+
+  @if (sessionError()) {
+    <div class="w-full max-w-4xl mb-4">
+      <p-message severity="error" text="Session not found or has ended." />
+    </div>
+  }
+
+  <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+    <!-- Create Session -->
+    <div
+      class="bg-surface-0 border border-surface-200 rounded-2xl p-6 flex flex-col gap-6 animate-fade-slide-up [animation-delay:100ms]"
+    >
+      <h2 class="text-lg font-semibold">Start a Session</h2>
+      <form [formGroup]="createForm" (ngSubmit)="submitCreate()" class="flex flex-col gap-4 flex-1">
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-sm" for="smName">Username</label>
+          <input
+            pInputText
+            id="smName"
+            formControlName="scrumMasterName"
+            placeholder="Enter your displayed name..."
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-sm" for="projectId">GitLab Project ID</label>
+          <input
+            pInputText
+            id="projectId"
+            formControlName="gitlabProjectId"
+            placeholder="E.g. 12345678"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="font-medium text-sm" for="token">GitLab Token</label>
+          <p-password
+            id="token"
+            formControlName="gitlabToken"
+            placeholder="Enter your GitLab Personal Access Token..."
+            [feedback]="false"
+            [toggleMask]="true"
+            [fluid]="true"
+            [invalid]="
+              createForm.controls.gitlabToken.invalid && createForm.controls.gitlabToken.touched
+            "
+          />
+        </div>
+
+        @if (store.error()) {
+          <p-message severity="error" [text]="store.error()!" />
+        }
+
+        <p-button
+          type="submit"
+          label="Create Session"
+          icon="pi pi-play"
+          [loading]="store.loading()"
+          [disabled]="createForm.invalid"
+          styleClass="w-full mt-auto"
+        />
+      </form>
+    </div>
+
+    <!-- Join Session -->
+    <div
+      class="bg-surface-0 border border-surface-200 rounded-2xl p-6 flex flex-col gap-6 animate-fade-slide-up [animation-delay:250ms]"
+    >
+      <h2 class="text-lg font-semibold">Join a Session</h2>
+      <form
+        [formGroup]="joinForm"
+        (ngSubmit)="submitJoin()"
+        class="flex flex-col gap-4 flex-1 justify-between"
+      >
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="font-medium text-sm" for="sessionId">Session ID</label>
+            <input
+              pInputText
+              id="sessionId"
+              formControlName="sessionId"
+              placeholder="Paste session ID"
+            />
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="font-medium text-sm" for="devName">Username</label>
+            <input
+              pInputText
+              id="devName"
+              formControlName="name"
+              placeholder="Enter your displayed name..."
+            />
+          </div>
+
+          @if (store.error()) {
+            <p-message severity="error" [text]="store.error()!" />
+          }
+        </div>
+
+        <p-button
+          type="submit"
+          label="Join Session"
+          icon="pi pi-sign-in"
+          [loading]="store.loading()"
+          [disabled]="joinForm.invalid"
+          styleClass="w-full mt-auto"
+        />
+      </form>
+    </div>
+  </div>
+</div>
