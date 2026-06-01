@@ -11,5 +11,9 @@ export const routes: Routes = [
     loadComponent: () => import('./features/session/session-table').then(m => m.SessionTableComponent),
     canActivate: [sessionGuard],
   },
+  {
+    path: 'error',
+    loadComponent: () => import('./features/error/error').then(m => m.ErrorComponent),
+  },
   { path: '**', redirectTo: '' },
 ];
