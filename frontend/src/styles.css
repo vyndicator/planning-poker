@@ -1,3 +1,25 @@
 @layer tailwind-base, primeng, tailwind-utilities;
 
 @import 'tailwindcss';
+@config '../tailwind.config.js';
+
+@theme {
+  --color-surface-0:   var(--p-surface-0);
+  --color-surface-50:  var(--p-surface-50);
+  --color-surface-100: var(--p-surface-100);
+  --color-surface-200: var(--p-surface-200);
+  --color-surface-300: var(--p-surface-300);
+  --color-surface-400: var(--p-surface-400);
+  --color-surface-500: var(--p-surface-500);
+  --color-surface-600: var(--p-surface-600);
+  --color-surface-700: var(--p-surface-700);
+  --color-surface-800: var(--p-surface-800);
+  --color-surface-900: var(--p-surface-900);
+  --color-surface-950: var(--p-surface-950);
+
+  --color-primary:          var(--p-primary-color);
+  --color-primary-contrast: var(--p-primary-contrast-color);
+
+  --color-text:       var(--p-text-color);
+  --color-text-muted: var(--p-text-muted-color);
+}
